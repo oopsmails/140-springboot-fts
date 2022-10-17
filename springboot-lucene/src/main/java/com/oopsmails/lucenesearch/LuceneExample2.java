@@ -48,13 +48,14 @@ public class LuceneExample2 {
         TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage);
 
         Term term1 = new Term("title", "part");
-        Term term2 = new Term("course_code", "3437RJ1");
+//        Term term2 = new Term("course_code", "3437RJ1");
+        Term term2 = new Term("course_code", "3437RJ1".toLowerCase());
 //        Term term2 = new Term("title", "one");
 
         TermQuery query1 = new TermQuery(term1);
         TermQuery query2 = new TermQuery(term2);
 
-        // Use BooleanClause.Occur.MUST for AND queries, NOT as expected for multiple fields
+        // Use BooleanClause.Occur.MUST for AND queries, NOT as expected for multiple fields, if NOT toLowerCase() !!!
         // BooleanClause.Occur.SHOULD for OR queries
 //        BooleanQuery queryForSearching
 //                = new BooleanQuery.Builder()
@@ -66,7 +67,7 @@ public class LuceneExample2 {
                 = new BooleanQuery.Builder()
                 .add(query1, BooleanClause.Occur.MUST)
                 .add(query2, BooleanClause.Occur.MUST)
-                .build(); // Query string: +title:part +course_code:3437RJ1, 0 hits???
+                .build(); // Query string: +title:part +course_code:3437RJ1, 0 hits??? !!! should toLowerCase() !!!
 
 //        BooleanQuery.Builder builder1 = new BooleanQuery.Builder();
 //        builder1.add(query1, BooleanClause.Occur.MUST);
@@ -92,7 +93,7 @@ public class LuceneExample2 {
         Document doc = new Document();
         doc.add(new TextField("title", title, Field.Store.YES));
 //        doc.add(new StringField("course_code", courseCode, Field.Store.YES));
-        doc.add(new TextField("course_code", courseCode, Field.Store.YES));
+        doc.add(new TextField("course_code", courseCode.toLowerCase(), Field.Store.YES));
         w.addDocument(doc);
     }
 
