@@ -5,16 +5,16 @@ import com.oopsmails.lucenesearch.model.Institution;
 import com.oopsmails.lucenesearch.service.SearchInstitutionService;
 import com.oopsmails.lucenesearch.utils.JsonUtils;
 import org.apache.commons.text.StringEscapeUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -27,35 +27,33 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
-@SpringBootTest(classes = {
-        SearchControllerTest.class
-})
+/**
+ * https://www.baeldung.com/java-beforeall-afterall-non-static
+ * <p>
+ * We'll use the @TestInstance annotation to configure the lifecycle of a test.
+ * If we don't declare it on our test class, the lifecycle mode will be PER_METHOD
+ * by default.
+ * <p>
+ * So, to prevent our test class from throwing a JUnitException, we need to annotate
+ * it with @TestInstance(TestInstance.Lifecycle.PER_CLASS).
+ */
+
+@WebMvcTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SearchControllerTest {
     @Value("classpath:data/institutions2.json")
     Resource jsonFile;
 
     private List<Institution> mockInstitutions = new ArrayList<>();
 
-    //    protected MockMvc mockMvc;
     @Autowired
     private MockMvc mockMvc;
 
-
-    //    @InjectMocks
-    //    private SearchController searchController;
-
-    @Mock
+    @MockBean
     private SearchInstitutionService searchInstitutionService;
 
-    @BeforeTestClass
+    @BeforeAll
     public void setUp() throws Exception {
-        //    @BeforeEach
-        //    @BeforeAll
-        //    static void setUp() throws Exception {
-        //        MockitoAnnotations.openMocks(this);
-        //        mockMvc = MockMvcBuilders.standaloneSetup(searchController).build();
-
         InputStream fileAsStream = jsonFile.getInputStream();
         mockInstitutions = JsonUtils.getObjectMapper()
                 .readValue(fileAsStream, new TypeReference<List<Institution>>() {
@@ -64,8 +62,6 @@ public class SearchControllerTest {
 
     @Test
     public void test_A_getFinancialInstitutions() throws Exception {
-        //        List<Institution> institutions = new ArrayList<>();
-
         when(searchInstitutionService.searchInstitutions(Mockito.any()))
                 .thenReturn(this.mockInstitutions);
 

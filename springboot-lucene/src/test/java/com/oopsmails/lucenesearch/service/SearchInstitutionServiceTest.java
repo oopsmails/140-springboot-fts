@@ -34,7 +34,7 @@ public class SearchInstitutionServiceTest {
         List<Institution> result = searchInstitutionService.searchInstitutions(searchRequestDTO);
 
         assertThat(result).isNotNull();
-        //        Assert.assertTrue("size as expected.", result.size() == 2);
+        assertThat(result.size()).isEqualTo(2);
     }
 
     @TestConfiguration
