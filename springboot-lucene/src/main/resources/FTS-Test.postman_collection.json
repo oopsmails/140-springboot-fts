@@ -1,0 +1,348 @@
+{
+	"info": {
+		"_postman_id": "2bbee98c-10f7-4f95-88c1-2ae0e402bf63",
+		"name": "FTS-Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/avro/person",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/avro/person",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"avro",
+						"person"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hibernate-search-01",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/plant/search?text=cherry&limit=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"plant",
+						"search"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "cherry"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hibernate-search-02",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/plant/search?text=sian p&limit=5&fields=name&fields=scientificName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"plant",
+						"search"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "sian p"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "fields",
+							"value": "name"
+						},
+						{
+							"key": "fields",
+							"value": "scientificName"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hibernate-search-03",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/plant/search?text=asia&limit=5&fields=name&fields=scientificName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"plant",
+						"search"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "asia"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "fields",
+							"value": "name"
+						},
+						{
+							"key": "fields",
+							"value": "scientificName"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hibernate-search-05",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/plant/search?text=ig&limit=5&fields=name&fields=scientificName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"plant",
+						"search"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "ig"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "fields",
+							"value": "name"
+						},
+						{
+							"key": "fields",
+							"value": "scientificName"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hibernate-search-04-whiteSpace",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/plant/search?text=siab &limit=5&fields=name&fields=scientificName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"plant",
+						"search"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "siab "
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "fields",
+							"value": "name"
+						},
+						{
+							"key": "fields",
+							"value": "scientificName"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "query-search-01",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/plant/qsearch?text=asiab&limit=5&fields=name&fields=scientificName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"plant",
+						"qsearch"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "asiab"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "fields",
+							"value": "name"
+						},
+						{
+							"key": "fields",
+							"value": "scientificName"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "query-search-02-hasToBeWholeWord",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/plant/qsearch?text=asia&limit=5&fields=name&fields=scientificName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"plant",
+						"qsearch"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "asia"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "fields",
+							"value": "name"
+						},
+						{
+							"key": "fields",
+							"value": "scientificName"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "home-made-search-01",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/plant/mysearch?text=aaa&limit=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"plant",
+						"mysearch"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "aaa"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "home-made-search-02",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/plant/mysearch?text=Cal&limit=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"plant",
+						"mysearch"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "Cal"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

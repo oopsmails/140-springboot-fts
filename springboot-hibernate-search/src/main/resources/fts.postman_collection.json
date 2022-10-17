@@ -1,0 +1,249 @@
+{
+  "info": {
+    "_postman_id": "d5f0963d-0f2d-40e7-9647-6513423adc71",
+    "name": "Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "http://localhost:8080/avro/person",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/avro/person",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "avro",
+            "person"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "hibernate-search-01",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:9000/plant/search?text=cherry&limit=5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9000",
+          "path": [
+            "plant",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "text",
+              "value": "cherry"
+            },
+            {
+              "key": "limit",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "hibernate-search-02",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:9000/plant/search?text=sian p&limit=5&fields=name&fields=scientificName",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9000",
+          "path": [
+            "plant",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "text",
+              "value": "sian p"
+            },
+            {
+              "key": "limit",
+              "value": "5"
+            },
+            {
+              "key": "fields",
+              "value": "name"
+            },
+            {
+              "key": "fields",
+              "value": "scientificName"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "hibernate-search-03",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:9000/plant/search?text=asia&limit=5&fields=name&fields=scientificName",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9000",
+          "path": [
+            "plant",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "text",
+              "value": "asia"
+            },
+            {
+              "key": "limit",
+              "value": "5"
+            },
+            {
+              "key": "fields",
+              "value": "name"
+            },
+            {
+              "key": "fields",
+              "value": "scientificName"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "hibernate-search-04-whiteSpace",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:9000/plant/search?text=siab &limit=5&fields=name&fields=scientificName",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9000",
+          "path": [
+            "plant",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "text",
+              "value": "siab "
+            },
+            {
+              "key": "limit",
+              "value": "5"
+            },
+            {
+              "key": "fields",
+              "value": "name"
+            },
+            {
+              "key": "fields",
+              "value": "scientificName"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "query-search-01",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:9000/plant/qsearch?text=asian&limit=5&fields=name&fields=scientificName",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9000",
+          "path": [
+            "plant",
+            "qsearch"
+          ],
+          "query": [
+            {
+              "key": "text",
+              "value": "asian"
+            },
+            {
+              "key": "limit",
+              "value": "5"
+            },
+            {
+              "key": "fields",
+              "value": "name"
+            },
+            {
+              "key": "fields",
+              "value": "scientificName"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "query-search-02-hasToBeWholeWord",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:9000/plant/qsearch?text=asia&limit=5&fields=name&fields=scientificName",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9000",
+          "path": [
+            "plant",
+            "qsearch"
+          ],
+          "query": [
+            {
+              "key": "text",
+              "value": "asia"
+            },
+            {
+              "key": "limit",
+              "value": "5"
+            },
+            {
+              "key": "fields",
+              "value": "name"
+            },
+            {
+              "key": "fields",
+              "value": "scientificName"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

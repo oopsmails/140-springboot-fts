@@ -1,0 +1,16 @@
+INSERT INTO plant (created_at,family,name,scientific_name) VALUES
+	 ('2022-09-29 09:52:51.2451819',N'pinaceae',N'subalpine fir',N'abies lasiocarpa'),
+	 ('2022-09-29 09:52:51.2451896',N'rosaceae',N'sour cherry',N'prunus cerasus'),
+	 ('2022-09-29 09:52:51.2451945',N'rosaceae2',N'asian pear',N'pyrus pyrifolia'),
+	 ('2022-09-29 09:52:51.2451965',N'rosaceae3',N'asiab pear',N'pyrus pyrifolia3'),
+	 ('2022-09-29 09:52:51.2452010',N'hamamelidaceae',N'chinese witch hazel',N'hamamelis mollis'),
+	 ('2022-09-29 09:52:51.2452061',N'sapindaceae',N'silver maple',N'acer saccharinum'),
+	 ('2022-09-29 09:52:51.2452780',N'magnoliaceae',N'cucumber tree',N'magnolia acuminata'),
+	 ('2022-09-29 09:52:51.2452874',N'ericaceae',N'korean rhododendron',N'rhododendron mucronulatum'),
+	 ('2022-09-29 09:52:51.2452924',N'araceae',N'water lettuce',N'pistia'),
+	 ('2022-09-29 09:52:51.2452962',N'fagaceae',N'sessile oak',N'quercus petraea');
+INSERT INTO plant (created_at,family,name,scientific_name) VALUES
+	 ('2022-09-29 09:52:51.2453007',N'moraceae',N'common fig',N'ficus carica');
+INSERT INTO plant (created_at,family,name,scientific_name) VALUES
+	 ('2022-09-29 09:52:51.2453007',N'moraceae2',N'common fig2',N'ficus carica2');
+
