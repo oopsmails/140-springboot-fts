@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface WmmDocumentIndexer<T> {
-    org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(WmmDocumentIndexer.class);
+public interface OopsDocumentIndexer<T> {
+    org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(OopsDocumentIndexer.class);
     int SEARCH_RESULT_LIMIT = 100000;
 
     Document createDocument(T t);

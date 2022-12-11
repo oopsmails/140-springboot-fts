@@ -6,7 +6,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 
-public interface InstitutionIndexer extends WmmDocumentIndexer<DeliveringInstitution> {
+public interface InstitutionIndexer extends OopsDocumentIndexer<DeliveringInstitution> {
     final String FIELD_FUND_NAME_TRANSFER_ID = "institutionId";
 
     default Document createDocument(DeliveringInstitution deliveringInstitution) {

@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 @Service
 @Slf4j
 @Getter
-public class SearchInvestmentProductService implements WmmSearchService<InvestmentProduct> {
+public class SearchInvestmentProductService implements OopsSearchService<InvestmentProduct> {
 
     @Autowired
     private InvestmentProductDao<InvestmentProduct> investmentProductDaoSfImpl;
@@ -39,7 +39,7 @@ public class SearchInvestmentProductService implements WmmSearchService<Investme
 
         Predicate<InvestmentProduct> finalPredicate = calcFinalPredicate(
                 predicates,
-                searchRequestDTO.getWmmSearchTermOperator());
+                searchRequestDTO.getOopsSearchTermOperator());
 
         result = searchByPredicate(investmentProducts, finalPredicate, searchRequestDTO.getLimit());
         log.info("searchRequestDTO = [{}], \nresult.size = {}", searchRequestDTO, result.size());

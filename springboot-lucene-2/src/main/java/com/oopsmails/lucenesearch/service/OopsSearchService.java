@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public interface WmmSearchService<T> {
-    org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(WmmSearchService.class);
+public interface OopsSearchService<T> {
+    org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(OopsSearchService.class);
 
     List<String> SEARCHABLE_FIELDS_INSTITUTION = Arrays.asList("alias", "enName", "frName");
     List<String> SEARCHABLE_FIELDS_INVESTMENT_PRODUCT = Arrays.asList("symbolName", "productName", "productDesc");
@@ -76,14 +76,14 @@ public interface WmmSearchService<T> {
             result.setFields(getSearchableFields());
         }
 
-        if (WmmSearchTerm.UNKNOWN == result.getWmmSearchTermKeywordMatch()) {
-            log.warn("enrichSearchRequestDTO, no SearchTermKeywordMatch defined, setting default, (WmmSearchTerm.CONTAINS)");
-            result.setWmmSearchTermKeywordMatch(WmmSearchTerm.CONTAINS);
+        if (OopsSearchTerm.UNKNOWN == result.getOopsSearchTermKeywordMatch()) {
+            log.warn("enrichSearchRequestDTO, no SearchTermKeywordMatch defined, setting default, (OopsSearchTerm.CONTAINS)");
+            result.setOopsSearchTermKeywordMatch(OopsSearchTerm.CONTAINS);
         }
 
-        if (WmmSearchTerm.UNKNOWN == result.getWmmSearchTermOperator()) {
-            log.warn("enrichSearchRequestDTO, no getWmmSearchTermOperator defined, setting default, (WmmSearchTerm.OR)");
-            result.setWmmSearchTermOperator(WmmSearchTerm.OR);
+        if (OopsSearchTerm.UNKNOWN == result.getOopsSearchTermOperator()) {
+            log.warn("enrichSearchRequestDTO, no getOopsSearchTermOperator defined, setting default, (OopsSearchTerm.OR)");
+            result.setOopsSearchTermOperator(OopsSearchTerm.OR);
         }
 
         if (result.getLimit() <= 0) {
@@ -112,23 +112,23 @@ public interface WmmSearchService<T> {
         return result;
     }
 
-    default Predicate<T> calcFinalPredicate(List<Predicate<T>> predicates, WmmSearchTerm operator) {
+    default Predicate<T> calcFinalPredicate(List<Predicate<T>> predicates, OopsSearchTerm operator) {
         Predicate<T> result = x -> false;
-        if (predicates == null || predicates.isEmpty() || WmmSearchTerm.UNKNOWN == operator) {
-            log.warn("Passed in Predicates is empty or WmmSearchTerm operator {} cannot be calculated.", operator);
+        if (predicates == null || predicates.isEmpty() || OopsSearchTerm.UNKNOWN == operator) {
+            log.warn("Passed in Predicates is empty or OopsSearchTerm operator {} cannot be calculated.", operator);
             return result;
         }
-        if (WmmSearchTerm.OR == operator) {
+        if (OopsSearchTerm.OR == operator) {
             for (Predicate<T> item : predicates) {
                 result = result.or(item);
             }
-        } else if  (WmmSearchTerm.AND == operator) {
+        } else if  (OopsSearchTerm.AND == operator) {
             result = x -> true;
             for (Predicate<T> item : predicates) {
                 result = result.or(item);
             }
         } else {
-            log.warn("WmmSearchTerm operator {} cannot be calculated.", operator);
+            log.warn("OopsSearchTerm operator {} cannot be calculated.", operator);
         }
         return result;
     }
@@ -141,14 +141,14 @@ public interface WmmSearchService<T> {
 //                log.info("composeFieldPredicate, instanceMethod = {}", instanceMethod);
                 String fieldValue = (String) instanceMethod.invoke(item);
 
-                if (WmmSearchTerm.CONTAINS == searchRequestDTO.getWmmSearchTermKeywordMatch()) {
+                if (OopsSearchTerm.CONTAINS == searchRequestDTO.getOopsSearchTermKeywordMatch()) {
                     result = OptionalUtil.getFieldValue(() -> StringUtils.containsIgnoreCase(fieldValue, searchRequestDTO.getText()),
                             false);
-                } else if (WmmSearchTerm.START_WITH == searchRequestDTO.getWmmSearchTermKeywordMatch()) {
+                } else if (OopsSearchTerm.START_WITH == searchRequestDTO.getOopsSearchTermKeywordMatch()) {
                     result = OptionalUtil.getFieldValue(() -> StringUtils.startsWithIgnoreCase(fieldValue, searchRequestDTO.getText()),
                             false);
                 } else {
-                    log.warn("No WmmSearchTerm defined, predicate might not working. fieldName = {}, searchRequestDTO = [{}]", fieldName, searchRequestDTO);
+                    log.warn("No OopsSearchTerm defined, predicate might not working. fieldName = {}, searchRequestDTO = [{}]", fieldName, searchRequestDTO);
                 }
             } catch (IllegalAccessException | InvocationTargetException | IntrospectionException e) {
                 log.warn("Exception during composeFieldPredicate. fieldName = {}, searchRequestDTO = [{}]", fieldName, searchRequestDTO);
@@ -190,7 +190,7 @@ public interface WmmSearchService<T> {
         for (int i = 0; i < fieldNames.size(); i++) {
             resultSB.append(composeFieldQuery(fieldNames.get(i), searchText));
             if (i != fieldNames.size() - 1) {
-                resultSB.append(searchRequestDTO.getWmmSearchTermOperator().getValue() + " ");
+                resultSB.append(searchRequestDTO.getOopsSearchTermOperator().getValue() + " ");
             }
         }
 

@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @Slf4j
-public class WmmApiSearchApplication {
+public class SpringBootLuceneSearchApplication2 {
     public static void main(String[] args) {
-        SpringApplication.run(WmmApiSearchApplication.class, args);
+        SpringApplication.run(SpringBootLuceneSearchApplication2.class, args);
     }
 }

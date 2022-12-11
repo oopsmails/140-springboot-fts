@@ -1,6 +1,6 @@
 package com.oopsmails.lucenesearch.service;
 
-public enum WmmSearchTerm {
+public enum OopsSearchTerm {
     UNKNOWN(""),
     AND("AND"),
     OR("OR"),
@@ -9,7 +9,7 @@ public enum WmmSearchTerm {
 
     private final String value;
 
-    WmmSearchTerm(String aValue) {
+    OopsSearchTerm(String aValue) {
         this.value = aValue;
     }
 

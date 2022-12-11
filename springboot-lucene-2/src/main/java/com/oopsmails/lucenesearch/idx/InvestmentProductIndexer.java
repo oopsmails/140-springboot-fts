@@ -6,7 +6,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 
-public interface InvestmentProductIndexer extends WmmDocumentIndexer<InvestmentProduct> {
+public interface InvestmentProductIndexer extends OopsDocumentIndexer<InvestmentProduct> {
 
     default Document createDocument(InvestmentProduct investmentProduct) {
         if (investmentProduct == null) {

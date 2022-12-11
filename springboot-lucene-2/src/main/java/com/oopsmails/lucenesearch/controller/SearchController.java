@@ -23,14 +23,14 @@ import java.util.List;
 public class SearchController {
 //    @Autowired
 //    @Qualifier("searchInstitutionServiceLucene")
-//    WmmSearchService<DeliveringInstitution> searchInstitutionServiceLucene;
+//    OopsSearchService<DeliveringInstitution> searchInstitutionServiceLucene;
 //
 //    @Autowired
 //    @Qualifier("searchInstitutionService")
-//    WmmSearchService<DeliveringInstitution> searchInstitutionService;
+//    OopsSearchService<DeliveringInstitution> searchInstitutionService;
 //
 //    @Autowired
-//    WmmSearchService<InvestmentProduct> searchInvestmentProductService;
+//    OopsSearchService<InvestmentProduct> searchInvestmentProductService;
 
     @Autowired
     SearchInstitutionServiceLucene searchInstitutionServiceLucene;

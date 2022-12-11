@@ -30,7 +30,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class SearchInvestmentProductServiceLucene implements WmmSearchService<InvestmentProduct> {
+public class SearchInvestmentProductServiceLucene implements OopsSearchService<InvestmentProduct> {
 
     @Autowired
     private InvestmentProductDao<InvestmentProduct> investmentProductDaoSfImpl;

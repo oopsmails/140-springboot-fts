@@ -1,6 +1,6 @@
 package com.oopsmails.lucenesearch.model;
 
-import com.oopsmails.lucenesearch.service.WmmSearchTerm;
+import com.oopsmails.lucenesearch.service.OopsSearchTerm;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -19,6 +19,6 @@ public class SearchRequestDTO {
     @Min(1)
     private int limit;
 
-    private WmmSearchTerm wmmSearchTermKeywordMatch = WmmSearchTerm.UNKNOWN;
-    private WmmSearchTerm wmmSearchTermOperator = WmmSearchTerm.UNKNOWN;
+    private OopsSearchTerm oopsSearchTermKeywordMatch = OopsSearchTerm.UNKNOWN;
+    private OopsSearchTerm oopsSearchTermOperator = OopsSearchTerm.UNKNOWN;
 }

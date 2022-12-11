@@ -23,7 +23,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class SearchInstitutionServiceLucene implements WmmSearchService<DeliveringInstitution> {
+public class SearchInstitutionServiceLucene implements OopsSearchService<DeliveringInstitution> {
 
     String DEFAULT_INDEX_FS_LOCATION_INSTITUTION = "/institution";
 
@@ -58,14 +58,14 @@ public class SearchInstitutionServiceLucene implements WmmSearchService<Deliveri
             Query query1 = new TermQuery(term1);
             Query query2 = new TermQuery(term2); // Exact matching
 
-            if (WmmSearchTerm.START_WITH == searchRequestDTO.getWmmSearchTermKeywordMatch()) {
+            if (OopsSearchTerm.START_WITH == searchRequestDTO.getOopsSearchTermKeywordMatch()) {
                 query1 = new PrefixQuery(term1);
                 query2 = new PrefixQuery(term2);
-            } else if (WmmSearchTerm.CONTAINS == searchRequestDTO.getWmmSearchTermKeywordMatch()) {
+            } else if (OopsSearchTerm.CONTAINS == searchRequestDTO.getOopsSearchTermKeywordMatch()) {
                 query1 = new WildcardQuery(new Term("alias", "*" + searchRequestDTO.getText().toLowerCase() + "*"));
                 query2 = new WildcardQuery(new Term("enName", "*" + searchRequestDTO.getText().toLowerCase() + "*"));
-            } else if (WmmSearchTerm.UNKNOWN == searchRequestDTO.getWmmSearchTermKeywordMatch()) {
-                log.warn("No WmmSearchTerm defined, FuzzyQuery might cause some confusion.");
+            } else if (OopsSearchTerm.UNKNOWN == searchRequestDTO.getOopsSearchTermKeywordMatch()) {
+                log.warn("No OopsSearchTerm defined, FuzzyQuery might cause some confusion.");
                 query1 = new FuzzyQuery(term1);
                 query2 = new FuzzyQuery(term2);
             }
