@@ -1,0 +1,199 @@
+package com.oopsmails.lucenesearch.service;
+
+import com.oopsmails.lucenesearch.dao.InstitutionDao;
+import com.oopsmails.lucenesearch.entity.InvestmentProduct;
+import com.oopsmails.lucenesearch.idx.impl.InstitutionIndexerInMemory;
+import com.oopsmails.lucenesearch.model.DeliveringInstitution;
+import com.oopsmails.lucenesearch.model.SearchRequestDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.custom.CustomAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+@Service
+@Slf4j
+public class SearchInstitutionServiceLucene implements WmmSearchService<DeliveringInstitution> {
+    public static List<String> SEARCHABLE_FIELDS = Arrays.asList("alias", "enName", "frName");
+
+    String DEFAULT_INDEX_FS_LOCATION_INSTITUTION = "/institution";
+
+    @Value(value = "${wmm.api.search.lucene.index.location:./data/index}")
+    private String generalLuceneIndexLocation;
+
+    @Autowired
+    private InstitutionDao<DeliveringInstitution> institutionDaoSfImpl;
+
+    @Autowired
+    private InstitutionIndexerInMemory institutionIndexerInMemory;
+
+    @Value("${wmm.api.search.lucene.index.location:./data/index}")
+    private String luceneIndexLocation;
+
+    @Override
+    public List<DeliveringInstitution> doSearch(SearchRequestDTO searchRequestDTO) {
+        long now1 = System. currentTimeMillis();
+        List<DeliveringInstitution> result = new ArrayList<>();
+        if (!validateSearchCriteria(searchRequestDTO)) {
+            return result;
+        }
+        searchRequestDTO = enrichSearchRequestDTO(searchRequestDTO);
+
+        try {
+//            String querystr = "alias:(cibc) OR enName:(cibc) OR frName:(cibc)";
+            String querystr = composeGenericQuery(SEARCHABLE_FIELDS, searchRequestDTO);
+            log.info("querystr = [{}]", querystr);
+
+            List<Document> searchResultDocuments = institutionIndexerInMemory.searchIndex(
+                    institutionIndexerInMemory.getDirectory(),
+                    institutionIndexerInMemory.getAnalyzer(),
+                    "alias",
+                    querystr);
+
+            if (searchResultDocuments == null || searchResultDocuments.isEmpty()) {
+                return result;
+            }
+
+            result = institutionIndexerInMemory.createItemListFromDocuments(searchResultDocuments);
+//        result.stream().forEach(item -> log.info("found InvestmentProduct: {}", item));
+            log.info("searchRequestDTO = [{}], \nresult.size = {}", searchRequestDTO, result.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        long now2 = System. currentTimeMillis();
+        log.info("================ doSearch,\n Time used = {} ================", now2 - now1);
+        return result;
+    }
+    public List<DeliveringInstitution> doSearch_NotUsed(SearchRequestDTO searchRequestDTO) {
+        List<DeliveringInstitution> result = new ArrayList<>();
+        if (!validateSearchCriteria(searchRequestDTO)) {
+            return result;
+        }
+        searchRequestDTO = enrichSearchRequestDTO(searchRequestDTO);
+
+        String text = searchRequestDTO.getText();
+        List<String> fields = searchRequestDTO.getFields();
+        int limit = searchRequestDTO.getLimit();
+
+        List<DeliveringInstitution> allDeliveringInstitutions = institutionDaoSfImpl.getAllInstitutions();
+        List<Document> documents = new ArrayList<>();
+
+        allDeliveringInstitutions.stream()
+                .forEach(institution -> {
+                    Document document = createDocument(institution);
+                    documents.add(document);
+                });
+
+        IndexWriter writer = null;
+        try {
+            writer = createCustomIndexWriter();
+            writer.deleteAll();
+
+            writer.addDocuments(documents);
+            writer.commit();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Analyzer analyzer = new StandardAnalyzer();
+//        String querystr = "alias:(cibc) OR enName:(cibc)"; // 2
+        String querystr = "alias:(cibc) OR enName:(cibc) OR frName:(cibc)"; // 2
+        try {
+            Query query = new QueryParser("alias", analyzer).parse(querystr);
+
+            int hitsPerPage = 100;
+//            IndexReader reader = DirectoryReader.open(index);
+//            IndexSearcher searcher = new IndexSearcher(reader);
+
+            Directory dir = FSDirectory.open(Paths.get(this.luceneIndexLocation));
+            IndexReader reader = DirectoryReader.open(dir);
+            IndexSearcher searcher = new IndexSearcher(reader);
+            TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage);
+            searcher.search(query, collector);
+            ScoreDoc[] hits = collector.topDocs().scoreDocs;
+
+            System.out.println("Query string: " + querystr);
+            System.out.println("Found " + hits.length + " hits.");
+
+            for (int i = 0; i < hits.length; ++i) {
+                int docId = hits[i].doc;
+                Document d = searcher.doc(docId);
+                System.out.println((i + 1) + ". " + d.get("institutionId") + ": " + d.get("alias") + "\n:::\n\t" + d.get("enName"));
+
+                DeliveringInstitution item = new DeliveringInstitution();
+                item.setInstitutionId(d.get("institutionId"));
+                item.setAlias(d.get("alias"));
+                item.setAlias(d.get("enName"));
+                item.setAlias(d.get("frName"));
+
+                result.add(item);
+            }
+
+            result.stream().forEach(institution -> log.info("found institution: {}", institution));
+            reader.close();
+
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+
+        log.info("searchRequestDTO = [{}], result.size = {}", searchRequestDTO, result.size());
+        return result;
+    }
+
+    @Override
+    public List<String> getSearchableFields() {
+        return SEARCHABLE_FIELDS;
+    }
+
+    private Document createDocument(DeliveringInstitution deliveringInstitution) {
+        Document document = new Document();
+        document.add(new StringField("institutionId", deliveringInstitution.getInstitutionId(), Field.Store.YES));
+        document.add(new TextField("alias", deliveringInstitution.getAlias(), Field.Store.YES));
+        document.add(new TextField("enName", deliveringInstitution.getEnName(), Field.Store.YES));
+        document.add(new TextField("frName", deliveringInstitution.getFrName(), Field.Store.YES));
+        return document;
+    }
+
+    private IndexWriter createCustomIndexWriter() throws IOException {
+        FSDirectory dir = FSDirectory.open(Paths.get(this.luceneIndexLocation));
+        Analyzer analyzer = new StandardAnalyzer();
+//        Analyzer analyzer = CustomAnalyzer.builder()
+//                .withTokenizer("standard")
+//                .addTokenFilter("lowercase")
+//                .addTokenFilter("stop")
+//                .addTokenFilter("porterstem")
+//                .addTokenFilter("capitalization")
+//                .build();
+        IndexWriterConfig config = new IndexWriterConfig(analyzer);
+        IndexWriter writer = new IndexWriter(dir, config);
+        return writer;
+    }
+
+}
