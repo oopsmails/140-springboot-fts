@@ -164,4 +164,8 @@ public abstract class OopsAbstractDocumentIndexer<T> {
             log.error("Error when closing IndexWriter and SearcherManager...", e);
         }
     }
+
+    protected String nullToEmpty(String s) {
+        return s == null ? "" : s;
+    }
 }

@@ -1,6 +1,7 @@
 package com.oopsmails.lucenesearch.service;
 
 import com.oopsmails.lucenesearch.dao.AssetItemDao;
+import com.oopsmails.lucenesearch.entity.ext.AssetListJsonItem;
 import com.oopsmails.lucenesearch.model.AssetItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,5 +17,9 @@ public class AssetListService {
 
     public List<AssetItem> getAllItems() {
         return assetItemDao.getAllItems();
+    }
+
+    public AssetListJsonItem getAllRawItems() {
+        return assetItemDao.getAllRawItems();
     }
 }

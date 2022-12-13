@@ -201,4 +201,9 @@ public interface OopsSearchService<T> {
         return resultBuilder.build();
     }
 
+    // ================================= following from original =====================================
+
+    default void init() {
+//        CachingWrapperFilter equitiesAndIndicesFilterAllMarket
+    }
 }
