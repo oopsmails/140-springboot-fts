@@ -23,7 +23,8 @@ public class SymbolIndexer extends OopsAbstractDocumentIndexer<EntitySymbolData>
     public static final String FIELD_MARKET = "tdMarket";
     public static final String FIELD_SYMBOL_TYPE = "symbolType";
 
-    public static final List<String> SEARCHABLE_FIELDS_SYMBOL = Arrays.asList(FIELD_MARKET, FIELD_SYMBOL, FIELD_DESC, FIELD_SYMBOL_TYPE);
+//    public static final List<String> SEARCHABLE_FIELDS_SYMBOL = Arrays.asList(FIELD_SYMBOL, FIELD_MARKET, FIELD_DESC, FIELD_SYMBOL_TYPE);
+    public static final List<String> SEARCHABLE_FIELDS_SYMBOL = Arrays.asList(FIELD_SYMBOL, FIELD_MARKET, FIELD_DESC, FIELD_SYMBOL_TYPE);
 
     @Autowired
     private SymbolService symbolService;

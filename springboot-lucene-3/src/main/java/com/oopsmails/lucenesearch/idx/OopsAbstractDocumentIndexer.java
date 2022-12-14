@@ -122,13 +122,13 @@ public abstract class OopsAbstractDocumentIndexer<T> {
         return result;
     }
 
-    public QueryParser prepareDefaultQueryParser(List<String> fields) {
-        if (fields == null || fields.isEmpty()) {
-            new MultiFieldQueryParser(getSearchableFields().toArray(new String[0]), this.analyzer);
-        }
-
-        return new MultiFieldQueryParser(fields.toArray(new String[0]), this.analyzer);
-    }
+//    public QueryParser prepareDefaultQueryParser(List<String> fields) {
+//        if (fields == null || fields.isEmpty()) {
+//            new MultiFieldQueryParser(getSearchableFields().toArray(new String[0]), this.analyzer);
+//        }
+//
+//        return new MultiFieldQueryParser(fields.toArray(new String[0]), this.analyzer);
+//    }
 
     public void postInstantiate(List<T> items) {
         log.info("postInstantiate, indexing items.size = [{}]", items == null ? 0 : items.size());

@@ -25,7 +25,7 @@ public class MfIndexer extends OopsAbstractDocumentIndexer<EntityMarketDataMF> {
     public static final String FIELD_FUND_TYPE = "fundType";
     public static final String FIELD_LOAD_TYPE = "loadype";
 
-    public static final List<String> SEARCHABLE_FIELDS_SYMBOL = Arrays.asList(FIELD_MARKET, FIELD_SYMBOL, FIELD_FUND_NAME, FIELD_FUND_TYPE, FIELD_LOAD_TYPE);
+    public static final List<String> SEARCHABLE_FIELDS_SYMBOL = Arrays.asList(FIELD_SYMBOL, FIELD_FUND_NAME, FIELD_MARKET, FIELD_FUND_TYPE, FIELD_LOAD_TYPE);
     @Autowired
     private AssetListService assetListService;
 

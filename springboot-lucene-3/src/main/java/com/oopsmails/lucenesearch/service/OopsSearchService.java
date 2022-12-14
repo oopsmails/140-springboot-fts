@@ -92,42 +92,42 @@ public interface OopsSearchService<T> {
         return result;
     }
 
-    default String composeGenericQueryString(List<String> fieldNames, AssetsSearchCriteria assetsSearchCriteria) {
-        if (fieldNames == null
-                || fieldNames.isEmpty()
-                || assetsSearchCriteria == null
-                || StringUtils.isEmpty(assetsSearchCriteria.getText())) {
-            log.info("composeGenericQueryString, passed in fieldNames [{}] or assetsSearchCriteria [{}] is empty.", fieldNames, assetsSearchCriteria);
-        }
-        StringBuilder resultSB = new StringBuilder();
-        String searchText = assetsSearchCriteria.getText();
+//    default String composeGenericQueryString(List<String> fieldNames, AssetsSearchCriteria assetsSearchCriteria) {
+//        if (fieldNames == null
+//                || fieldNames.isEmpty()
+//                || assetsSearchCriteria == null
+//                || StringUtils.isEmpty(assetsSearchCriteria.getText())) {
+//            log.info("composeGenericQueryString, passed in fieldNames [{}] or assetsSearchCriteria [{}] is empty.", fieldNames, assetsSearchCriteria);
+//        }
+//        StringBuilder resultSB = new StringBuilder();
+//        String searchText = assetsSearchCriteria.getText();
+//
+//        for (int i = 0; i < fieldNames.size(); i++) {
+//            resultSB.append(composeFieldQueryString(fieldNames.get(i), searchText));
+//            if (i != fieldNames.size() - 1) {
+//                resultSB.append(assetsSearchCriteria.getSearchTermOperator().getValue() + " ");
+//            }
+//        }
+//
+//        String result = resultSB.toString();
+//        log.info("composeGenericQueryString, result query string: [{}]", result);
+//        return result;
+//    }
 
-        for (int i = 0; i < fieldNames.size(); i++) {
-            resultSB.append(composeFieldQueryString(fieldNames.get(i), searchText));
-            if (i != fieldNames.size() - 1) {
-                resultSB.append(assetsSearchCriteria.getSearchTermOperator().getValue() + " ");
-            }
-        }
-
-        String result = resultSB.toString();
-        log.info("composeGenericQueryString, result query string: [{}]", result);
-        return result;
-    }
-
-    default String composeFieldQueryString(String fieldName, String searchText) {
-        if (StringUtils.isEmpty(fieldName) || StringUtils.isEmpty(searchText)) {
-            log.info("composeFieldQueryString, passed in fieldName [{}] or searchText [{}] is empty.", fieldName, searchText);
-            return "";
-        }
-        return fieldName + ":(" + searchText + ") ";
-    }
+//    default String composeFieldQueryString(String fieldName, String searchText) {
+//        if (StringUtils.isEmpty(fieldName) || StringUtils.isEmpty(searchText)) {
+//            log.info("composeFieldQueryString, passed in fieldName [{}] or searchText [{}] is empty.", fieldName, searchText);
+//            return "";
+//        }
+//        return fieldName + ":(" + searchText + ") ";
+//    }
 
     default Term composeFieldTerm(String fieldName, String searchText, boolean toLowerCase) {
         if (StringUtils.isEmpty(fieldName) || StringUtils.isEmpty(searchText)) {
             log.warn("composeFieldTerm, passed in fieldName [{}] or searchText [{}] is empty.", fieldName, searchText);
             return null;
         }
-        return new Term(fieldName, toLowerCase ? searchText.toLowerCase() : searchText);
+        return new Term(fieldName, toLowerCase ? searchText.toLowerCase() : searchText.toUpperCase());
     }
 
     default Query composeFieldQuery(String fieldName, boolean toLowerCase, AssetsSearchCriteria assetsSearchCriteria) {
@@ -135,7 +135,7 @@ public interface OopsSearchService<T> {
             log.warn("composeFieldQuery, passed in assetsSearchCriteria is null.");
             return null;
         }
-        String searchText = toLowerCase ? assetsSearchCriteria.getText().toLowerCase() : assetsSearchCriteria.getText();
+        String searchText = toLowerCase ? assetsSearchCriteria.getText().toLowerCase() : assetsSearchCriteria.getText().toUpperCase();
         Term term = composeFieldTerm(fieldName, searchText, toLowerCase);
         Query result = new TermQuery(term);
 
@@ -152,7 +152,7 @@ public interface OopsSearchService<T> {
     }
 
     default List<Query> composeFieldQueries(List<String> fieldNames, AssetsSearchCriteria assetsSearchCriteria) {
-        return composeFieldQueries(fieldNames, true, assetsSearchCriteria);
+        return composeFieldQueries(fieldNames, false, assetsSearchCriteria);
     }
 
     default List<Query> composeFieldQueries(List<String> fieldNames, boolean toLowerCase, AssetsSearchCriteria assetsSearchCriteria) {

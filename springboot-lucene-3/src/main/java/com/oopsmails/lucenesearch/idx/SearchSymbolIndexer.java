@@ -21,7 +21,7 @@ public class SearchSymbolIndexer extends OopsAbstractDocumentIndexer<AssetItem> 
     public static final String FIELD_MARKET = "market";
     public static final String FIELD_SYMBOL = "symbol";
     public static final String FIELD_DESC = "desc";
-    public static final List<String> SEARCHABLE_FIELDS_SYMBOL = Arrays.asList(FIELD_MARKET, FIELD_SYMBOL, FIELD_DESC);
+    public static final List<String> SEARCHABLE_FIELDS_SYMBOL = Arrays.asList(FIELD_SYMBOL, FIELD_DESC, FIELD_MARKET);
     @Autowired
     private AssetListService assetListService;
 
