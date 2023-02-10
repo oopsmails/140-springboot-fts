@@ -45,7 +45,12 @@ public class SearchSymbolService implements OopsSearchService<EntitySymbolData> 
 //                queries.add(query2);
 
             } else {
-                queries = composeFieldQueries(assetsSearchCriteria.getFields(), assetsSearchCriteria);
+//                queries = composeFieldQueries(assetsSearchCriteria.getFields(), assetsSearchCriteria);
+                Query query1 = new PrefixQuery(new Term(symbolIndexer.FIELD_SYMBOL, assetsSearchCriteria.getText()));
+                Query query2 = new PrefixQuery(new Term(symbolIndexer.FIELD_DESC, assetsSearchCriteria.getText()));
+                queries.add(query1);
+                queries.add(query2);
+
             }
 
             BooleanQuery booleanQuery = composeBooleanQuery(queries, assetsSearchCriteria);
