@@ -1,4 +1,4 @@
-package com.oopsmails.springboothibernatesearch.model;
+package com.oopsmails.lucenesearch.model;
 
 import lombok.Data;
 

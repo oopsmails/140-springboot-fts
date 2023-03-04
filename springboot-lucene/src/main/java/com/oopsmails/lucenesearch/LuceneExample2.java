@@ -41,11 +41,17 @@ public class LuceneExample2 {
 
         System.out.println("=====================================================================");
 
+        /****
+         *
+         *
+         */
+
+
         // BooleanQuery
         int hitsPerPage = 10;
         IndexReader reader = DirectoryReader.open(dir);
         IndexSearcher searcher = new IndexSearcher(reader);
-        TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage);
+        TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, 20);
 
         Term term1 = new Term("title", "part");
 //        Term term2 = new Term("course_code", "3437RJ1");

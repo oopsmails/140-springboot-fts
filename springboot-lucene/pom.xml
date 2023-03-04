@@ -15,7 +15,8 @@
 	<description>Spring Boot REST API with Lucene Search</description>
 	<properties>
 		<java.version>11</java.version>
-		<apache.lucene.version>7.4.0</apache.lucene.version>
+<!--		<apache.lucene.version>7.4.0</apache.lucene.version>-->
+		<apache.lucene.version>8.1.1</apache.lucene.version>
 	</properties>
 	<dependencies>
 		<dependency>

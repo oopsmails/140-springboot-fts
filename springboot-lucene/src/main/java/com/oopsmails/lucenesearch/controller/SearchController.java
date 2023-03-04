@@ -1,8 +1,8 @@
 package com.oopsmails.lucenesearch.controller;
 
 import com.oopsmails.lucenesearch.model.Institution;
+import com.oopsmails.lucenesearch.model.SearchRequestDTO;
 import com.oopsmails.lucenesearch.service.SearchInstitutionService;
-import com.oopsmails.springboothibernatesearch.model.SearchRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

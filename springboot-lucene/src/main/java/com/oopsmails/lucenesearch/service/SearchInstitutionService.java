@@ -1,7 +1,7 @@
 package com.oopsmails.lucenesearch.service;
 
 import com.oopsmails.lucenesearch.model.Institution;
-import com.oopsmails.springboothibernatesearch.model.SearchRequestDTO;
+import com.oopsmails.lucenesearch.model.SearchRequestDTO;
 
 import java.util.Arrays;
 import java.util.List;

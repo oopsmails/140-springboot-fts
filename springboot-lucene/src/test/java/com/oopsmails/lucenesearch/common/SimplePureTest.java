@@ -1,4 +1,4 @@
-package com.oopsmails.lucenesearch;
+package com.oopsmails.lucenesearch.common;
 
 import com.oopsmails.lucenesearch.idx.InMemoryLuceneIndex;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;

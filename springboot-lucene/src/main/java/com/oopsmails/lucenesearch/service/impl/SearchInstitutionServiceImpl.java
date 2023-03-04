@@ -2,8 +2,8 @@ package com.oopsmails.lucenesearch.service.impl;
 
 import com.oopsmails.lucenesearch.dao.InstitutionDao;
 import com.oopsmails.lucenesearch.model.Institution;
+import com.oopsmails.lucenesearch.model.SearchRequestDTO;
 import com.oopsmails.lucenesearch.service.SearchInstitutionService;
-import com.oopsmails.springboothibernatesearch.model.SearchRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -93,7 +93,7 @@ public class SearchInstitutionServiceImpl implements SearchInstitutionService {
             Directory dir = FSDirectory.open(Paths.get(this.luceneIndexLocation));
             IndexReader reader = DirectoryReader.open(dir);
             IndexSearcher searcher = new IndexSearcher(reader);
-            TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage);
+            TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, 20);
             searcher.search(query, collector);
             ScoreDoc[] hits = collector.topDocs().scoreDocs;
 

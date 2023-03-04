@@ -1,6 +1,7 @@
 package com.oopsmails.lucenesearch;
 
-import com.oopsmails.springboothibernatesearch.model.SearchRequestDTO;
+
+import com.oopsmails.lucenesearch.model.SearchRequestDTO;
 
 import java.util.ArrayList;
 import java.util.List;
