@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Slf4j
-public class TradeItemLuceneSearchTest {
+public class TradeItemLuceneSearchTest2 {
 
     @Autowired
     TradeItemIndexer tradeItemIndexer;
@@ -29,8 +29,8 @@ public class TradeItemLuceneSearchTest {
     TradeItemSearchService tradeItemSearchService;
 
     @Test
-    public void testBooleanQuery_TradeItem() throws Exception {
-        String methodName = "testBooleanQuery_TradeItem";
+    public void testDiffTypesMerge_TradeItem() throws Exception {
+        String methodName = "testDiffTypesMerge_TradeItem";
         assertThat(tradeItemIndexer).isNotNull();
         tradeItemIndexer.refreshIndexer();
 
@@ -38,35 +38,32 @@ public class TradeItemLuceneSearchTest {
         Instant start = Instant.now();
 
         Map<TradeItemSearchParam, Integer> params = new LinkedHashMap<>();
-        params.put(new TradeItemSearchParam("STOCK", "USA", "t"), 1);
+
         params.put(new TradeItemSearchParam("STOCK", "", "t"), 2);
-        params.put(new TradeItemSearchParam("", "", "t"), 2);
-        params.put(new TradeItemSearchParam("", "", "ts"), 1);
-        params.put(new TradeItemSearchParam("", "", "tsl"), 3);
-        params.put(new TradeItemSearchParam("", "", "tsla"), 1);
+        params.put(new TradeItemSearchParam("FUND", "", "t"), 2);
 
         List<TradeItem> result = new ArrayList<>();
 
         for (TradeItemSearchParam param : params.keySet()) {
-            result = tradeItemSearchService.doSearch(param);
-            log.info(methodName + ", param: [{}], result.size(): [{}]", AlbertJsonUtil.objectToJsonString(param, false), result.size());
-            log.info("json = {}", AlbertJsonUtil.objectToJsonString(result, true));
+            List<TradeItem> tempResult = tradeItemSearchService.doSearch(param);
+            log.info(methodName + ", param: [{}], tempResult.size(): [{}]", AlbertJsonUtil.objectToJsonString(param, false), tempResult.size());
+            log.info("json = {}", AlbertJsonUtil.objectToJsonString(tempResult, true));
+            assertThat(tempResult.size()).isEqualTo(params.get(param));
             log.info("------------------------------------------------------------------------------");
-            assertThat(result.size()).isEqualTo(params.get(param));
+            result.addAll(tempResult);
         }
-
-        //        List<TradeItem> result = tradeItemSearchService.doSearch(tradeItemSearchParam);
 
         Instant end = Instant.now();
         long duration = Duration.between(start, end).toMillis();
 
-        //        log.info(methodName + ", result.size(): [{}]", result.size());
+        log.info(methodName + ", result.size(): [{}]", result.size());
         log.info(methodName + ", run in {} milli seconds", duration);
         log.info("========================== Running Time End ================================");
 
         //        log.info("json = {}", AlbertJsonUtil.objectToJsonString(result, true));
 
         assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(4);
     }
 
 }

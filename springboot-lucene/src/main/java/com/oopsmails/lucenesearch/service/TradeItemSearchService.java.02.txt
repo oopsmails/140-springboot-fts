@@ -67,20 +67,30 @@ public class TradeItemSearchService {
         String symbolTxt = param.getSymbolTxt();
         if (typeTxt != null && !"".equals(typeTxt)) {
             queryBuilder.add(calcSymbolQueryOnType(param), BooleanClause.Occur.MUST);
+//            switch (typeTxt.trim()) {
+//                case "STOCK":
+//                    queryBuilder.add(getSimpleSymbolQuery(param, QUERY_TYPE_TERM), BooleanClause.Occur.MUST);
+//                    break;
+//                case "FIXEDINCOME":
+//                    queryBuilder.add(getSimpleSymbolQuery(param, QUERY_TYPE_WILDCARD), BooleanClause.Occur.MUST);
+//                    break;
+//                case "FUND":
+//                    queryBuilder.add(getSimpleSymbolQuery(param, QUERY_TYPE_PREFIX), BooleanClause.Occur.MUST);
+//                    break;
+//                case "OPTION":
+//                    queryBuilder.add(getSimpleSymbolQuery(param, QUERY_TYPE_TERM), BooleanClause.Occur.MUST);
+//                    break;
+//                default:
+//                    System.out.println("Invalid day of the week.");
+//                    break;
+//            }
         } else {
             if (symbolTxt != null && !"".equals(symbolTxt)) {
                 if (symbolTxt.length() <= 2) {
                     // need to work on different types and merge!!!
-                    TradeItemSearchParam stockParam = param.clone();
-                    stockParam.setTypeTxt("STOCK");
-                    queryBuilder.add(calcSymbolQueryOnType(stockParam), BooleanClause.Occur.MUST);
+                    queryBuilder.add(getSimpleSymbolQuery(param, QUERY_TYPE_TERM), BooleanClause.Occur.MUST);
 
-//                    TradeItemSearchParam fundParam = param.clone();
-//                    stockParam.setTypeTxt("FUND");
-//                    queryBuilder.add(calcSymbolQueryOnType(stockParam), BooleanClause.Occur.MUST);
-
-//                    queryBuilder.add(getSimpleNameQuery(param, QUERY_TYPE_PREFIX), BooleanClause.Occur.SHOULD);
-//                    queryBuilder.add(getSimpleDescQuery(param, QUERY_TYPE_PREFIX), BooleanClause.Occur.SHOULD);
+                    //                    queryBuilder.add(calcNameQuery(param.clone().setSymbolTxt();, QUERY_TYPE_PREFIX), BooleanClause.Occur.MUST); ???
                 } else {
                     queryBuilder.add(getSimpleSymbolQuery(param, QUERY_TYPE_PREFIX), BooleanClause.Occur.MUST);
                     queryBuilder.add(getSimpleNameQuery(param, QUERY_TYPE_PREFIX), BooleanClause.Occur.SHOULD);

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TradeItemSearchParam {
+public class TradeItemSearchParam implements Cloneable {
     private String typeTxt;
     private String marketTxt;
     private String symbolTxt;
@@ -18,5 +18,14 @@ public class TradeItemSearchParam {
         this.typeTxt = typeTxt;
         this.marketTxt = marketTxt;
         this.symbolTxt = symbolTxt;
+    }
+
+    @Override
+    public TradeItemSearchParam clone() {
+        try {
+            return (TradeItemSearchParam) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(); // should never happen
+        }
     }
 }
