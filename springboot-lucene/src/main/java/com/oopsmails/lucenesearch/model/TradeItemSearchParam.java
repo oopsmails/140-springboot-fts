@@ -18,6 +18,8 @@ public class TradeItemSearchParam implements Cloneable {
         this.typeTxt = typeTxt;
         this.marketTxt = marketTxt;
         this.symbolTxt = symbolTxt;
+        this.nameTxt = symbolTxt;
+        this.descTxt = symbolTxt;
     }
 
     @Override

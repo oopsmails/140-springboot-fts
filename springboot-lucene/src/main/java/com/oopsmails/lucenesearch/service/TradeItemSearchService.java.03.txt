@@ -74,10 +74,17 @@ public class TradeItemSearchService {
                     TradeItemSearchParam stockParam = param.clone();
                     stockParam.setTypeTxt("STOCK");
                     queryBuilder.add(calcSymbolQueryOnType(stockParam), BooleanClause.Occur.MUST);
+
+//                    TradeItemSearchParam fundParam = param.clone();
+//                    stockParam.setTypeTxt("FUND");
+//                    queryBuilder.add(calcSymbolQueryOnType(stockParam), BooleanClause.Occur.MUST);
+
+//                    queryBuilder.add(getSimpleNameQuery(param, QUERY_TYPE_PREFIX), BooleanClause.Occur.SHOULD);
+//                    queryBuilder.add(getSimpleDescQuery(param, QUERY_TYPE_PREFIX), BooleanClause.Occur.SHOULD);
                 } else {
-                    queryBuilder.add(getSimpleQuery(TradeItemIndexer.FIELD_SYMBOL, symbolTxt, QUERY_TYPE_PREFIX, true), BooleanClause.Occur.MUST);
-                    queryBuilder.add(getSimpleQuery(TradeItemIndexer.FIELD_NAME, param.getNameTxt(), QUERY_TYPE_PREFIX, false), BooleanClause.Occur.SHOULD);
-                    queryBuilder.add(getSimpleQuery(TradeItemIndexer.FIELD_DESC, param.getDescTxt(), QUERY_TYPE_PREFIX, false), BooleanClause.Occur.SHOULD);
+                    queryBuilder.add(getSimpleSymbolQuery(param, QUERY_TYPE_PREFIX), BooleanClause.Occur.MUST);
+                    queryBuilder.add(getSimpleNameQuery(param, QUERY_TYPE_PREFIX), BooleanClause.Occur.SHOULD);
+                    queryBuilder.add(getSimpleDescQuery(param, QUERY_TYPE_PREFIX), BooleanClause.Occur.SHOULD);
                 }
             } else {
                 log.warn("Should not be here ....");
@@ -94,17 +101,17 @@ public class TradeItemSearchService {
         if (typeTxt != null && !"".equals(typeTxt)) {
             switch (typeTxt.trim()) {
                 case "STOCK":
-                    if (symbolTxt.length() <= 2) { //getSimpleQuery
-                        return getSimpleQuery(TradeItemIndexer.FIELD_SYMBOL, symbolTxt, QUERY_TYPE_TERM, true);
+                    if (symbolTxt.length() <= 2) {
+                        return getSimpleSymbolQuery(param, QUERY_TYPE_TERM);
                     } else {
-                        return getSimpleQuery(TradeItemIndexer.FIELD_SYMBOL, symbolTxt, QUERY_TYPE_PREFIX, true);
+                        return getSimpleSymbolQuery(param, QUERY_TYPE_PREFIX);
                     }
                 case "FIXEDINCOME":
-                    return getSimpleQuery(TradeItemIndexer.FIELD_SYMBOL, symbolTxt, QUERY_TYPE_PREFIX, true);
+                    return getSimpleSymbolQuery(param, QUERY_TYPE_PREFIX);
                 case "FUND":
-                    return getSimpleQuery(TradeItemIndexer.FIELD_SYMBOL, symbolTxt, QUERY_TYPE_PREFIX, true);
+                    return getSimpleSymbolQuery(param, QUERY_TYPE_PREFIX);
                 case "OPTION":
-                    return getSimpleQuery(TradeItemIndexer.FIELD_SYMBOL, symbolTxt, QUERY_TYPE_PREFIX, true);
+                    return getSimpleSymbolQuery(param, QUERY_TYPE_PREFIX);
                 default:
                     System.out.println("Invalid day of the week.");
                     break;
@@ -113,47 +120,36 @@ public class TradeItemSearchService {
         return null;
     }
 
-    private Query getSimpleQuery(String fieldName, String searchText, String queryType, boolean toUpperCase) {
-        String finalSearchText = toUpperCase ? searchText.toUpperCase() : searchText.toUpperCase();
+    private Query getSimpleSymbolQuery(TradeItemSearchParam param, String queryType) {
+        String symbolTxt = param.getSymbolTxt().trim().toUpperCase();
         if (QUERY_TYPE_WILDCARD.equals(queryType)) {
-            return new WildcardQuery(new Term(fieldName, "*" + finalSearchText + "*"));
+            return new WildcardQuery(new Term(TradeItemIndexer.FIELD_SYMBOL, "*" + symbolTxt + "*"));
         } else if (QUERY_TYPE_PREFIX.equals(queryType)) {
-            return new PrefixQuery(new Term(fieldName, finalSearchText));
+            return new PrefixQuery(new Term(TradeItemIndexer.FIELD_SYMBOL, symbolTxt));
         } else {
-            return new TermQuery(new Term(fieldName, finalSearchText));
+            return new TermQuery(new Term(TradeItemIndexer.FIELD_SYMBOL, symbolTxt));
         }
     }
 
-//    private Query getSimpleSymbolQuery(TradeItemSearchParam param, String queryType) {
-//        String symbolTxt = param.getSymbolTxt().trim().toUpperCase();
-//        if (QUERY_TYPE_WILDCARD.equals(queryType)) {
-//            return new WildcardQuery(new Term(TradeItemIndexer.FIELD_SYMBOL, "*" + symbolTxt + "*"));
-//        } else if (QUERY_TYPE_PREFIX.equals(queryType)) {
-//            return new PrefixQuery(new Term(TradeItemIndexer.FIELD_SYMBOL, symbolTxt));
-//        } else {
-//            return new TermQuery(new Term(TradeItemIndexer.FIELD_SYMBOL, symbolTxt));
-//        }
-//    }
-//
-//    private Query getSimpleNameQuery(TradeItemSearchParam param, String queryType) {
-//        String symbolTxt = param.getSymbolTxt();
-//        if (QUERY_TYPE_WILDCARD.equals(queryType)) {
-//            return new WildcardQuery(new Term(TradeItemIndexer.FIELD_NAME, "*" + symbolTxt + "*"));
-//        } else if (QUERY_TYPE_PREFIX.equals(queryType)) {
-//            return new PrefixQuery(new Term(TradeItemIndexer.FIELD_NAME, symbolTxt));
-//        } else {
-//            return new TermQuery(new Term(TradeItemIndexer.FIELD_NAME, symbolTxt));
-//        }
-//    }
-//
-//    private Query getSimpleDescQuery(TradeItemSearchParam param, String queryType) {
-//        String symbolTxt = param.getSymbolTxt();
-//        if (QUERY_TYPE_WILDCARD.equals(queryType)) {
-//            return new WildcardQuery(new Term(TradeItemIndexer.FIELD_DESC, "*" + symbolTxt + "*"));
-//        } else if (QUERY_TYPE_PREFIX.equals(queryType)) {
-//            return new PrefixQuery(new Term(TradeItemIndexer.FIELD_DESC, symbolTxt));
-//        } else {
-//            return new TermQuery(new Term(TradeItemIndexer.FIELD_DESC, symbolTxt));
-//        }
-//    }
+    private Query getSimpleNameQuery(TradeItemSearchParam param, String queryType) {
+        String symbolTxt = param.getSymbolTxt();
+        if (QUERY_TYPE_WILDCARD.equals(queryType)) {
+            return new WildcardQuery(new Term(TradeItemIndexer.FIELD_NAME, "*" + symbolTxt + "*"));
+        } else if (QUERY_TYPE_PREFIX.equals(queryType)) {
+            return new PrefixQuery(new Term(TradeItemIndexer.FIELD_NAME, symbolTxt));
+        } else {
+            return new TermQuery(new Term(TradeItemIndexer.FIELD_NAME, symbolTxt));
+        }
+    }
+
+    private Query getSimpleDescQuery(TradeItemSearchParam param, String queryType) {
+        String symbolTxt = param.getSymbolTxt();
+        if (QUERY_TYPE_WILDCARD.equals(queryType)) {
+            return new WildcardQuery(new Term(TradeItemIndexer.FIELD_DESC, "*" + symbolTxt + "*"));
+        } else if (QUERY_TYPE_PREFIX.equals(queryType)) {
+            return new PrefixQuery(new Term(TradeItemIndexer.FIELD_DESC, symbolTxt));
+        } else {
+            return new TermQuery(new Term(TradeItemIndexer.FIELD_DESC, symbolTxt));
+        }
+    }
 }
