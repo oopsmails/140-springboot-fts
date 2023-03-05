@@ -51,11 +51,9 @@ public class TradeItemLuceneSearchTest {
             result = tradeItemSearchService.doSearch(param);
             log.info(methodName + ", param: [{}], result.size(): [{}]", AlbertJsonUtil.objectToJsonString(param, false), result.size());
             log.info("json = {}", AlbertJsonUtil.objectToJsonString(result, true));
+            assertThat(result.size()).as("The result.size " + param.getTypeTxt() + "is supposed to be as expected!" ).isEqualTo(params.get(param));
             log.info("------------------------------------------------------------------------------");
-            assertThat(result.size()).isEqualTo(params.get(param));
         }
-
-        //        List<TradeItem> result = tradeItemSearchService.doSearch(tradeItemSearchParam);
 
         Instant end = Instant.now();
         long duration = Duration.between(start, end).toMillis();
