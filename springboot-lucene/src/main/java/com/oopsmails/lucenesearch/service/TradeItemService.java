@@ -14,6 +14,7 @@ public class TradeItemService {
 
         result.add(new TradeItem("STOCK", "USA", "T", "AT&T", "AT and T Telcom"));
         result.add(new TradeItem("STOCK", "CAN", "T", "Telus", "Telecom Telus"));
+//        result.add(new TradeItem("STOCK", "CAN", "T", "Telus", "xelecom xelus")); // for TradeItemLuceneSearchTest3
         result.add(new TradeItem("STOCK", "CAN", "TS", "TS inc", "To be started"));
         result.add(new TradeItem("FIXEDINCOME", "USA", "TSL", "TSL corp", "To be started  tsL corp"));
         result.add(new TradeItem("FUND", "USA", "TSLA", "TSLA Motor", "Car Maker tslaa"));

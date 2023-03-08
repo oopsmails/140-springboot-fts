@@ -42,6 +42,7 @@ public class TradeItemLuceneSearchTest3 {
 
         BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
 
+        // MUST override SHOULD
         queryBuilder.add(tradeItemSearchService.getSimpleQuery(TradeItemIndexer.FIELD_SYMBOL,
                 "t",
                 TradeItemSearchService.QUERY_TYPE_TERM,
@@ -52,10 +53,17 @@ public class TradeItemLuceneSearchTest3 {
                 TradeItemSearchService.QUERY_TYPE_PREFIX,
                 true), BooleanClause.Occur.SHOULD);
 
-//        queryBuilder.add(tradeItemSearchService.getSimpleQuery(TradeItemIndexer.FIELD_SYMBOL,
-//                "t",
-//                TradeItemSearchService.QUERY_TYPE_WILDCARD,
-//                true), BooleanClause.Occur.SHOULD);
+        queryBuilder.add(tradeItemSearchService.getSimpleQuery(TradeItemIndexer.FIELD_SYMBOL,
+                "t",
+                TradeItemSearchService.QUERY_TYPE_WILDCARD,
+                true), BooleanClause.Occur.SHOULD);
+
+        // different fields
+        queryBuilder.add(tradeItemSearchService.getSimpleQuery(TradeItemIndexer.FIELD_DESC,
+                "t",
+                TradeItemSearchService.QUERY_TYPE_WILDCARD,
+                false), BooleanClause.Occur.MUST);
+
 
         List<Document> resultDocs = tradeItemIndexer.searchIndexByQuery(queryBuilder.build(), 200);
         log.info(methodName + ", resultDocs.size(): [{}]", resultDocs.size());
@@ -68,7 +76,7 @@ public class TradeItemLuceneSearchTest3 {
         log.info(methodName + ", run in {} milli seconds", duration);
         log.info("========================== Running Time End ================================");
 
-        //        log.info("json = {}", AlbertJsonUtil.objectToJsonString(result, true));
+                log.info("json = {}", AlbertJsonUtil.objectToJsonString(result, true));
 
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(2);
