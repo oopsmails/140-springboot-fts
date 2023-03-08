@@ -21,9 +21,9 @@ import java.util.List;
 @Service
 @Slf4j
 public class TradeItemSearchService {
-    private static final String QUERY_TYPE_TERM = "QUERY_TYPE_TERM";
-    private static final String QUERY_TYPE_PREFIX = "QUERY_TYPE_PREFIX";
-    private static final String QUERY_TYPE_WILDCARD = "QUERY_TYPE_WILDCARD";
+    public static final String QUERY_TYPE_TERM = "QUERY_TYPE_TERM";
+    public static final String QUERY_TYPE_PREFIX = "QUERY_TYPE_PREFIX";
+    public static final String QUERY_TYPE_WILDCARD = "QUERY_TYPE_WILDCARD";
 
     @Autowired
     private TradeItemIndexer tradeItemIndexer;
@@ -113,8 +113,8 @@ public class TradeItemSearchService {
         return null;
     }
 
-    private Query getSimpleQuery(String fieldName, String searchText, String queryType, boolean toUpperCase) {
-        String finalSearchText = toUpperCase ? searchText.toUpperCase() : searchText.toUpperCase();
+    public Query getSimpleQuery(String fieldName, String searchText, String queryType, boolean toUpperCase) {
+        String finalSearchText = toUpperCase ? searchText.toUpperCase() : searchText.toLowerCase();
         if (QUERY_TYPE_WILDCARD.equals(queryType)) {
             return new WildcardQuery(new Term(fieldName, "*" + finalSearchText + "*"));
         } else if (QUERY_TYPE_PREFIX.equals(queryType)) {
