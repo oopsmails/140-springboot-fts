@@ -127,15 +127,15 @@ public abstract class AbstractDocumentIndexer<T> {
 
         this.analyzer = new StandardAnalyzer();
 
-        // for lower case search but storing as is, doesn't work ????
-//        this.analyzer = new Analyzer() {
-//            @Override
-//            protected TokenStreamComponents createComponents(String fieldName) {
-//                Tokenizer tokenizer = new StandardTokenizer();
-//                TokenStream filter = new LowerCaseFilter(tokenizer);
-//                return new TokenStreamComponents(tokenizer, filter);
-//            }
-//        };
+        // for lower case search but storing as is, doesn't work ???? ONLY for searching ...
+        this.analyzer = new Analyzer() {
+            @Override
+            protected TokenStreamComponents createComponents(String fieldName) {
+                Tokenizer tokenizer = new StandardTokenizer();
+                TokenStream filter = new LowerCaseFilter(tokenizer);
+                return new TokenStreamComponents(tokenizer, filter);
+            }
+        };
 
         try {
             this.indexWriter = this.createWriterAndIndex(this.directory, this.analyzer, documents);

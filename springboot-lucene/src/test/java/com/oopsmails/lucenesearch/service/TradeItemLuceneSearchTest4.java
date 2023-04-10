@@ -54,6 +54,8 @@ public class TradeItemLuceneSearchTest4 {
          *
          *  Also, note the symbol is stored AS IS, so, should be uppercase in object field, not search text ..., search text can be controlled
          *  by fleg, upperCased
+         *
+         *  result.add(new TradeItem("STOCK", "USA", "TSLA", "TSLA Motor", "Car MaAtker tslaa")); // for testing lower case searching
          */
         BooleanQuery.Builder queryBuilder2 = new BooleanQuery.Builder();
         queryBuilder2.add(tradeItemSearchService.getSimpleQuery(TradeItemIndexer.FIELD_SYMBOL,
