@@ -39,7 +39,7 @@ public class SearchInstitutionServiceImpl implements SearchInstitutionService {
     @Autowired
     private InstitutionDao<Institution> institutionDaoSfImpl;
 
-    @Value("${wmm.api.search.lucene.index.location:./data/index}")
+    @Value("${albert.api.search.lucene.index.location:./data/index}")
     private String luceneIndexLocation;
 
     public List<Institution> searchInstitutions(SearchRequestDTO searchRequestDTO) {

@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         SearchInstitutionServiceTest.SearchInstitutionServiceTestConfig.class
 })
 @TestPropertySource(properties = {
-        "wmm.api.search.lucene.index.location=./data/index"
+        "albert.api.search.lucene.index.location=./data/index"
 })
 public class SearchInstitutionServiceTest {
     @Autowired
