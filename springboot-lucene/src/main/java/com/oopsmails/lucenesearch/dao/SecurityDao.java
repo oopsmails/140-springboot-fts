@@ -5,5 +5,8 @@ import com.oopsmails.lucenesearch.model.Security;
 import java.util.List;
 
 public interface SecurityDao {
-    List<Security> getAllInstitutions();
+    List<Security> getAllSecurities();
+    List<Security> getAllStocks();
+    List<Security> getAllFixedIncomes();
+    List<Security> getAllOptions();
 }

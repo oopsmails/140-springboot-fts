@@ -1,5 +1,8 @@
 package com.oopsmails.lucenesearch.model;
 
+import lombok.Data;
+
+@Data
 public class Security {
 
     private String securityId;

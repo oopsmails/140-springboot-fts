@@ -37,11 +37,38 @@ public class SecurityDaoFileImplTest {
     }
 
     @Test
-    public void test_getFromFile() {
-        List<Security> result = securityDao.getAllInstitutions();
+    public void test_getAllSecurities() {
+        List<Security> result = securityDao.getAllSecurities();
+        log.info("getAllSecurities, result.size = {}", result.size());
 
         assertTrue("size should > 0", result.size() > 0); // 0L is hardcoded
         //        assertEquals("size should match.", 0L, retId); // 0L is hardcoded
     }
 
+    @Test
+    public void test_getAllStocks() {
+        List<Security> result = securityDao.getAllStocks();
+        log.info("getAllStocks, result.size = {}", result.size());
+
+        assertTrue("size should > 0", result.size() > 0); // 0L is hardcoded
+        //        assertEquals("size should match.", 0L, retId); // 0L is hardcoded
+    }
+
+    @Test
+    public void test_getAllFixedIncomes() {
+        List<Security> result = securityDao.getAllFixedIncomes();
+        log.info("getAllFixedIncomes, result.size = {}", result.size());
+
+        assertTrue("size should > 0", result.size() > 0); // 0L is hardcoded
+        //        assertEquals("size should match.", 0L, retId); // 0L is hardcoded
+    }
+
+    @Test
+    public void test_getAllOptions() {
+        List<Security> result = securityDao.getAllOptions();
+        log.info("getAllOptions, result.size = {}", result.size());
+
+        assertTrue("size should > 0", result.size() > 0); // 0L is hardcoded
+        //        assertEquals("size should match.", 0L, retId); // 0L is hardcoded
+    }
 }
