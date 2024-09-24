@@ -46,9 +46,10 @@ public class LuceneExample {
 
         // 3. searching
         int hitsPerPage = 10;
+        int totalHitsThreshold = 100;
         IndexReader reader = DirectoryReader.open(dir);
         IndexSearcher searcher = new IndexSearcher(reader);
-        TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage);
+        TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, 100);
         searcher.search(query, collector);
         ScoreDoc[] hits = collector.topDocs().scoreDocs;
 
@@ -68,7 +69,7 @@ public class LuceneExample {
 
         //        IndexReader reader2 = DirectoryReader.open(dir);
         //        IndexSearcher searcher2 = new IndexSearcher(reader2);
-        TopScoreDocCollector collector2 = TopScoreDocCollector.create(hitsPerPage);
+        TopScoreDocCollector collector2 = TopScoreDocCollector.create(hitsPerPage, totalHitsThreshold);
 
         Term term1 = new Term("title", "part");
         Term term2 = new Term("course_code", "3437RJ1");

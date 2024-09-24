@@ -87,13 +87,14 @@ public class SearchInstitutionServiceImpl implements SearchInstitutionService {
             Query query = new QueryParser("INSTITUTION_NME_EN", analyzer).parse(querystr);
 
             int hitsPerPage = 10;
+            int totalHitsThreshold = 100;
             //            IndexReader reader = DirectoryReader.open(index);
             //            IndexSearcher searcher = new IndexSearcher(reader);
 
             Directory dir = FSDirectory.open(Paths.get(this.luceneIndexLocation));
             IndexReader reader = DirectoryReader.open(dir);
             IndexSearcher searcher = new IndexSearcher(reader);
-            TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage);
+            TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, totalHitsThreshold);
             searcher.search(query, collector);
             ScoreDoc[] hits = collector.topDocs().scoreDocs;
 
