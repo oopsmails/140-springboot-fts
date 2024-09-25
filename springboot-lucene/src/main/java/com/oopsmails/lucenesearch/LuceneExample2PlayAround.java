@@ -9,18 +9,16 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
 @Slf4j
-public class LuceneExample4 {
+public class LuceneExample2PlayAround {
 
     public static void main(String[] args) throws Exception {
         // Analyzer for tokenizing text
@@ -40,13 +38,19 @@ public class LuceneExample4 {
         addDoc(writer, "The Art of Computer Science", "9900333X");
         writer.close();
 
-        // Create a WildcardQuery (search for "Lucene in*")
-        Query query = new WildcardQuery(new Term("title", "Lucene in*"));
+        // Querying the index
+//        String queryStr = "Lucene"; // Search for "Lucene"
+//        Query q = new QueryParser("title", analyzer).parse(queryStr);
 
-        // Search the index
+        // Phrase query
+        String queryStr = "\"Lucene in\""; // Search for the exact phrase "Lucene in"
+        Query q = new QueryParser("title", analyzer).parse(queryStr);
+
+        // Searching the index
+        int hitsPerPage = 10;
         DirectoryReader reader = DirectoryReader.open(index);
         IndexSearcher searcher = new IndexSearcher(reader);
-        TopDocs docs = searcher.search(query, 10);
+        TopDocs docs = searcher.search(q, hitsPerPage);
         ScoreDoc[] hits = docs.scoreDocs;
 
         // Displaying results
@@ -62,7 +66,9 @@ public class LuceneExample4 {
 
     private static void addDoc(IndexWriter w, String title, String isbn) throws Exception {
         Document doc = new Document();
+        // A text field will be tokenized
         doc.add(new TextField("title", title, Field.Store.YES));
+        // A string field will not be tokenized
         doc.add(new StringField("isbn", isbn, Field.Store.YES));
         w.addDocument(doc);
     }

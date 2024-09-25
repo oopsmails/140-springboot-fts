@@ -18,8 +18,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
 @Slf4j
-public class LuceneExample3 {
-
+public class LuceneExample6QueryString {
     public static void main(String[] args) throws Exception {
         // Analyzer for tokenizing text
         StandardAnalyzer analyzer = new StandardAnalyzer();
@@ -32,25 +31,25 @@ public class LuceneExample3 {
         IndexWriter writer = new IndexWriter(index, config);
 
         // Add some documents to the index
-        addDoc(writer, "Lucene in Action", "193398817");
-        addDoc(writer, "Lucene for Dummies", "55320055Z");
-        addDoc(writer, "Managing Gigabytes", "55063554A");
-        addDoc(writer, "The Art of Computer Science", "9900333X");
+        addDoc(writer, "nbc", "can", "This is NBC news description");
+        addDoc(writer, "can", "nbc", "This is CAN product description");
         writer.close();
 
-        // Querying the index
-//        String queryStr = "Lucene"; // Search for "Lucene"
-//        Query q = new QueryParser("title", analyzer).parse(queryStr);
+        // Your complex query string
+//        String queryString = "+(symbol:nbc OR symbol:can) +(productName:nbc OR productName:can) +(productDesc:nbc OR productDesc:can)";
+//        String queryString = "+(productDesc:\"nbc news\" OR productDesc:this*)";
+//        String queryString = "+(productDesc:\"nbc news\")";
+        String queryString = "+(productDesc:\"nbc news*\")"; // same as nbc news
+//        String queryString = "+(productDesc:\"s is*\")";
 
-        // Phrase query
-        String queryStr = "\"Lucene in\""; // Search for the exact phrase "Lucene in"
-        Query q = new QueryParser("title", analyzer).parse(queryStr);
+        // Parse the query string
+        QueryParser parser = new QueryParser("symbol", analyzer); // Default field (not used in this case)
+        Query query = parser.parse(queryString);
 
-        // Searching the index
-        int hitsPerPage = 10;
+        // Search the index
         DirectoryReader reader = DirectoryReader.open(index);
         IndexSearcher searcher = new IndexSearcher(reader);
-        TopDocs docs = searcher.search(q, hitsPerPage);
+        TopDocs docs = searcher.search(query, 10);
         ScoreDoc[] hits = docs.scoreDocs;
 
         // Displaying results
@@ -58,18 +57,17 @@ public class LuceneExample3 {
         for (int i = 0; i < hits.length; ++i) {
             int docId = hits[i].doc;
             Document d = searcher.doc(docId);
-            System.out.println((i + 1) + ". " + d.get("title") + "\t" + d.get("isbn"));
+            System.out.println((i + 1) + ". symbol: " + d.get("symbol") + ", productName: " + d.get("productName") + ", productDesc: " + d.get("productDesc"));
         }
 
         reader.close();
     }
 
-    private static void addDoc(IndexWriter w, String title, String isbn) throws Exception {
+    private static void addDoc(IndexWriter w, String symbol, String productName, String productDesc) throws Exception {
         Document doc = new Document();
-        // A text field will be tokenized
-        doc.add(new TextField("title", title, Field.Store.YES));
-        // A string field will not be tokenized
-        doc.add(new StringField("isbn", isbn, Field.Store.YES));
+        doc.add(new StringField("symbol", symbol, Field.Store.YES));
+        doc.add(new StringField("productName", productName, Field.Store.YES));
+        doc.add(new TextField("productDesc", productDesc, Field.Store.YES));
         w.addDocument(doc);
     }
 }

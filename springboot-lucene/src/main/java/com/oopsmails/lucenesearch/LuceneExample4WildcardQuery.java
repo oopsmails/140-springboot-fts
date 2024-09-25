@@ -11,7 +11,6 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
@@ -20,7 +19,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
 @Slf4j
-public class LuceneExample5 {
+public class LuceneExample4WildcardQuery {
 
     public static void main(String[] args) throws Exception {
         // Analyzer for tokenizing text
@@ -40,18 +39,14 @@ public class LuceneExample5 {
         addDoc(writer, "The Art of Computer Science", "9900333X");
         writer.close();
 
-        // Create a PhraseQuery (search for the exact phrase "Lucene in")
-        PhraseQuery.Builder builder = new PhraseQuery.Builder();
-        builder.add(new Term("title", "lucene"));
-        builder.add(new Term("title", "for"));
-        PhraseQuery phraseQuery = builder.build();
-
-        log.info("search query: [{}]", phraseQuery);
+        // Create a WildcardQuery (search for "Lucene in*")
+//        Query query = new WildcardQuery(new Term("title", "Lucene in*"));
+        Query query = new WildcardQuery(new Term("title", "Lucene*for")); // Wildcard query (note no space matching)
 
         // Search the index
         DirectoryReader reader = DirectoryReader.open(index);
         IndexSearcher searcher = new IndexSearcher(reader);
-        TopDocs docs = searcher.search(phraseQuery, 10);
+        TopDocs docs = searcher.search(query, 10);
         ScoreDoc[] hits = docs.scoreDocs;
 
         // Displaying results
